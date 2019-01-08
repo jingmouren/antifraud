@@ -40,6 +40,6 @@ You can check out the other options available to use with *Ternary* using:
 #### Example
 Generate annotator command:
 
-     python -m antifraud --method randomForest --train data/train.csv --test data/test.csv
+     python -m antifraud --method random-forest --train data/train.csv --test data/test.csv
 
 
