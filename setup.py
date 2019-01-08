@@ -4,14 +4,14 @@ import sys
 import io
 
 setup(
-    name="fraud-detection",
+    name="antifraud",
     version="0.1.0",
     author="",
     author_email="",
     description="fraud detection.",
     long_description=io.open("README.md", encoding="UTF-8").read(),
     license="MIT",
-    url="https://github.com/daweicheng/fraud-detection",
+    url="https://github.com/daweicheng/antifraud",
     packages=find_packages(),
     entry_points={
         # 'console_scripts': [

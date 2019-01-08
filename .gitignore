@@ -1,8 +1,8 @@
 venv
 .idea
-fraud-detection.egg-info
+antifraud.egg-info
 dist
-data/*
+antifraud/data/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
