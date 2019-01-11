@@ -1,6 +1,15 @@
 from antifraud.__main__ import logger
 
+
 def logistic(X_train, X_test, y_train, y_test):
+    """
+
+    :param X_train:
+    :param X_test:
+    :param y_train:
+    :param y_test:
+    :return:
+    """
     '''
     use model LogisticRegression to evaluate our data, use X_train, y_train train a model LR, saved in folder model,
     use X_test to test model LR and print the accuracy rate
