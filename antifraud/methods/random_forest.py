@@ -1,3 +1,7 @@
+from antifraud.__main__ import logger
+from sklearn.model_selection import train_test_split
+
+
 def random_forest(X_train, X_test, y_train, y_test):
     '''
     use model RandomForestClassifier to evaluate our data, use X_train, y_train train a model RF, saved in folder model,
@@ -18,4 +22,4 @@ def random_forest(X_train, X_test, y_train, y_test):
             y_pred.append(0)
         else:
             y_pred.append(1)
-    print(accuracy_score(y_test, y_pred) * data_ratio)
+    logger.info(accuracy_score(y_test, y_pred) * data_ratio)
