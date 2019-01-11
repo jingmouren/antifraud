@@ -1,6 +1,6 @@
 from antifraud.__main__ import logger
 from sklearn.model_selection import train_test_split
-
+from antifraud.data import TRAIN_FILE
 
 def load_data(data_ratio = 0.02, test_ratio = 0.3):
     '''
@@ -22,14 +22,15 @@ def load_data(data_ratio = 0.02, test_ratio = 0.3):
     for line in file_read.readlines():
         data = line.strip().split()
         label.append(int(data[0]))  # the first column is the label, data type: int
-        feature0 = [float(item) for item in data[1:]]  # from the second column to the end are the features, data type: float
+        # from the second column to the end are the features, data type: float
+        feature0 = [float(item) for item in data[1:]]
         feature.append(feature0)
     X_train1, X_test1, y_train1, y_test1 = train_test_split(feature, label, test_size = test_ratio, random_state = 0)
     feature = []
     label = []
     sample = int(1.0/data_ratio)  # sample number, label the trade to choose or not
     count = 0  # count number
-    file_read = open('data/no_fraud_trade.txt')  # read no_fraud trades
+    file_read = open(TRAIN_FILE)  # read no_fraud trades
     logger.info("load file")
     for line in file_read.readlines():
         if count % sample == 0:

@@ -1,3 +1,5 @@
+from antifraud.__main__ import logger
+
 def logistic(X_train, X_test, y_train, y_test):
     '''
     use model LogisticRegression to evaluate our data, use X_train, y_train train a model LR, saved in folder model,
@@ -22,4 +24,4 @@ def logistic(X_train, X_test, y_train, y_test):
             y_pred.append(0)
         else:
             y_pred.append(1)
-    print(accuracy_score(y_test,y_pred) * data_ratio)
+    logger.info(accuracy_score(y_test,y_pred) * data_ratio)
