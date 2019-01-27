@@ -1,25 +1,29 @@
-from antifraud.__main__ import logger
-from sklearn.model_selection import train_test_split
+# from sklearn.externals import joblib
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
 
 
-def random_forest(X_train, X_test, y_train, y_test):
-    '''
-    use model RandomForestClassifier to evaluate our data, use X_train, y_train train a model RF, saved in folder model,
-    use X_test to test model RF and print the accuracy rate
+def random_forest(train_feature, train_label, test_feature, test_label):
+    """
+    use model RandomForestClassifier to evaluate our data, use train_feature, train_label train a model rf,
+    saved in folder model, use test_feature to test model rf and return the accuracy rate
     Args:
-        X_train: features used in model training
-        y_train: labels used in model training
-        X_test: features used in model testing
-        y_test: labels used in model testing
-    '''
-    RF = RandomForestClassifier()
-    RF.fit(X_train, y_train)
-    joblib.dump(RF, "model/RF.m")  # save the trained model in folder model as RF.m
-    y_pre = RF.predict_proba(X_test)
-    y_pred = []
-    for item in y_pre:
+        train_feature: features used in model training
+        train_label: labels used in model training
+        test_feature: features used in model testing
+        test_label: labels used in model testing
+    Returns:
+        the accuracy score of the fit model
+    """
+
+    rf = RandomForestClassifier()
+    rf.fit(train_feature, train_label)
+    # joblib.dump(rf, "model/rf.m")  # save the trained model in folder model as RF.m
+    pre_label = rf.predict_proba(test_feature)
+    _pre_label = []
+    for item in pre_label:
         if item[0] > item[1]:
-            y_pred.append(0)
+            _pre_label.append(0)
         else:
-            y_pred.append(1)
-    logger.info(accuracy_score(y_test, y_pred) * data_ratio)
+            _pre_label.append(1)
+    return accuracy_score(test_label, _pre_label)

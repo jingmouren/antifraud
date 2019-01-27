@@ -7,6 +7,13 @@ A Fraud Detection Framework
 -  Python>=3.5
 -  numpy>=1.14.3
 -  scikit-learn>=0.20.0
+-  pytest>=3.6.3
+-  pandas>=0.23.3
+-  networkx>=2.0
+-  scipy>=0.19.1
+-  matplotlib>=2.0.2
+-  tensorflow>=1.12.0
+-  xgboost>=0.81
 
 ## Usage
 
