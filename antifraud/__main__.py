@@ -46,7 +46,7 @@ def main(args):
         print("model wide-deep works on the data, the result is: ")
         wide_deep()
     if args.method == 'xgboost':
-        accuracy_rate = xgboost_model(args.train, args.test)
+        accuracy_rate = xgb_model(args.train, args.test)
         print("model xgboost works on the data, the accuracy rate is: ", accuracy_rate)
 
 
