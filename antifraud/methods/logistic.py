@@ -1,4 +1,3 @@
-# from sklearn.externals import joblib
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score
@@ -22,7 +21,6 @@ def logistic(train_feature, train_label, test_feature, test_label):
     test_feature_std = sc.transform(test_feature)
     lr = LogisticRegression(C=1000.0, random_state=0)  # use the default parameters
     lr.fit(train_feature_std, train_label)
-    # joblib.dump(lr, "model/lr.m")  # save the trained model in folder model as LR.m
     pre_label = lr.predict_proba(test_feature_std)
     _pre_label = []
     for item in pre_label:

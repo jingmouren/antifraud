@@ -1,4 +1,4 @@
-from antifraud.methods.deep_forest.GCForest import gcForest
+from antifraud.methods.deep_forest.gc_forest import GCForest
 from sklearn.metrics import accuracy_score
 
 
@@ -14,7 +14,7 @@ def deep_forest(train_feature, train_label, test_feature, test_label):
     Returns:
         the accuracy score of the fit model
     """
-    clf = gcForest(shape_1X=(1, 3), window=[2])
+    clf = GCForest(shape_x=(1, 3), window=[2])
     clf.fit(train_feature, train_label)
     pre_label = clf.predict(test_feature)
     return accuracy_score(test_label, pre_label)

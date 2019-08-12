@@ -1,4 +1,3 @@
-# from sklearn.externals import joblib
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 
@@ -18,7 +17,6 @@ def random_forest(train_feature, train_label, test_feature, test_label):
 
     rf = RandomForestClassifier()
     rf.fit(train_feature, train_label)
-    # joblib.dump(rf, "model/rf.m")  # save the trained model in folder model as RF.m
     pre_label = rf.predict_proba(test_feature)
     _pre_label = []
     for item in pre_label:

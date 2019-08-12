@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn.metrics import accuracy_score
 
 
-def xgboost_model(train_file, test_file):
+def xgb_model(train_file, test_file):
     dataset = pd.read_table(train_file, sep=' ', header=None)
     train = dataset.iloc[:, 1:].values
     labels = dataset.iloc[:, :1].values
@@ -25,26 +25,26 @@ def xgboost_model(train_file, test_file):
         'seed': 700,
         'nthread': 4,  # cpu线程数
     }
-    plst = list(paras.items())  # 超参数放到集合plst中;
+    paras_list = list(paras.items())  # 超参数放到集合plst中;
     offset = int(len(train) * 0.9)  # 训练集中数据, 9/10用于训练，1/10用于验证
     num_rounds = 500  # 迭代次数
-    xgtest = xgb.DMatrix(test)  # 加载数据可以是numpy的二维数组形式，也可以是xgboost的二进制的缓存文件，加载的数据存储在对象DMatrix中
-    xgtrain = xgb.DMatrix(train[:offset, :], label=labels[:offset])  # 将训练集的二维数组加入到里面
-    xgval = xgb.DMatrix(train[offset:, :], label=labels[offset:])  # 将验证集的二维数组形式的数据加入到DMatrix对象中
+    xgb_test = xgb.DMatrix(test)  # 加载数据可以是numpy的二维数组形式，也可以是xgboost的二进制的缓存文件，加载的数据存储在对象DMatrix中
+    xgb_train = xgb.DMatrix(train[:offset, :], label=labels[:offset])  # 将训练集的二维数组加入到里面
+    xgb_val = xgb.DMatrix(train[offset:, :], label=labels[offset:])  # 将验证集的二维数组形式的数据加入到DMatrix对象中
 
-    watchlist = [(xgtrain, 'train'), (xgval, 'val')]  # return训练和验证的错误率
-    model = xgb.train(plst, xgtrain, num_rounds, watchlist, early_stopping_rounds=100)
-    preds = model.predict(xgtest, ntree_limit=model.best_iteration)
-    _preds = []
-    for item in preds:
+    watchlist = [(xgb_train, 'train'), (xgb_val, 'val')]  # return训练和验证的错误率
+    model = xgb.train(paras_list, xgb_train, num_rounds, watchlist, early_stopping_rounds=100)
+    pre_result = model.predict(xgb_test, ntree_limit=model.best_iteration)
+    pre_label = []
+    for item in pre_result:
         if item > 0.5:
-            _preds.append(1.0)
+            pre_label.append(1.0)
         else:
-            _preds.append(0.0)
+            pre_label.append(0.0)
     _label = []
     for item in test_labels:
         _label.append(item[0])
-    return accuracy_score(_label, _preds)
+    return accuracy_score(_label, pre_label)
 
 
 
