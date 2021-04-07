@@ -3,7 +3,6 @@ A Credit Card Fraud Detection Framework.
 
 Source codes of papers:
 - AAAI2020: Spatio-temporal attention-based neural network for credit card fraud detection
-- TKDE2020: Graph Neural Network for Fraud Detection via Spatial-temporal Attention
 - ICONIP2016: Credit card fraud detection using convolutional neural networks
 
 ## Requirements
