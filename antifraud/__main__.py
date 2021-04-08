@@ -1,13 +1,8 @@
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from antifraud.config import Config
-from antifraud.methods.random_forest import *
-from antifraud.methods.logistic import *
-from antifraud.methods.deep_forest.deep_forest import *
-from antifraud.methods.wide_deep import *
-from antifraud.methods.xgboost_model import *
-from antifraud.feature_engineering.load_data import load_train_test
-
 import logging
+import numpy as np
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 
@@ -16,38 +11,62 @@ def parse_args():
     parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter,
                             conflict_handler='resolve')
     parser.add_argument("-m", "--method",  required=True,
-                        choices=['logistic', 'random-forest', 'xgboost', 'deep-forest', 'wide-deep', 'cnn',
-                                 'cnn-att', 'other'],
+                        choices=['logistic', 'Adamboost', 'GBDT', 'LSTM', 'cnn',
+                                 'cnn-att-2d', 'cnn-att-3d', 'other'],
                         help='The processing method: logistic, random-forest, xgboost, deep-forest, wide-deep, '
                              'cnn, cnn-att, other')
-    parser.add_argument("-train", "--train", default=None,
-                        help="The train data")
-    parser.add_argument("-test", "--test", default=None,
-                        help="The test data")
+    parser.add_argument("-trf", "--trainfeature", default=None,
+                        help="The train feature data")
+    parser.add_argument("-trl", "--trainlabel", default=None,
+                        help="The train label data")
+    parser.add_argument("-tef", "--testfeature", default=None,
+                        help="The test featrue data")
+    parser.add_argument("-tel", "--testlabel", default=None,
+                        help="The test label data")
+    parser.add_argument("-rawdata", "--rawdata", default=None,
+                        help="raw data file to be transformed to feature matrix.")
+    parser.add_argument("-lamda", "--lamda", default="0",
+                        help="(Only for cnn-att method) Time decay parameter.")
     args = parser.parse_args()
     config = Config().get_config()
     return args
 
 
 def main(args):
-    if args.method == 'random-forest':
-        train_feature, train_label, test_feature, test_label = load_train_test(args.train, args.test)
-        accuracy_rate = random_forest(train_feature, train_label, test_feature, test_label)
-        print("model random-forest works on the data, the accuracy rate is: ", accuracy_rate)
+    test_label = []
+    pred_score = []
     if args.method == 'logistic':
-        train_feature, train_label, test_feature, test_label = load_train_test(args.train, args.test)
-        accuracy_rate = logistic(train_feature, train_label, test_feature, test_label)
-        print("model logistic works on the data, the accuracy rate is: ", accuracy_rate)
-    if args.method == 'deep-forest':
-        train_feature, train_label, test_feature, test_label = load_train_test(args.train, args.test)
-        accuracy_rate = deep_forest(train_feature, train_label, test_feature, test_label)
-        print("model deep-forest works on the data, the accuracy rate is: ", accuracy_rate)
-    if args.method == 'wide-deep':
-        print("model wide-deep works on the data, the result is: ")
-        wide_deep()
-    if args.method == 'xgboost':
-        accuracy_rate = xgb_model(args.train, args.test)
-        print("model xgboost works on the data, the accuracy rate is: ", accuracy_rate)
+        from antifraud.methods.LR import logistic
+        pred_score,test_label = logistic(args.trainfeature, args.trainlabel, args.testfeature, args.testlabel)
+    elif args.method == 'Adamboost':
+        from antifraud.methods.AdaBM import adaBM
+        pred_score,test_label = adaBM(args.trainfeature, args.trainlabel, args.testfeature, args.testlabel)
+    elif args.method == 'GBDT':
+        from antifraud.methods.GBDT import xgb_model
+        pred_score,test_label = xgb_model(args.trainfeature, args.trainlabel, args.testfeature, args.testlabel)
+    elif args.method == 'LSTM':
+        from antifraud.methods.LSTM_seq import LSTM_model
+        pred_score,test_label = LSTM_model(args.trainfeature, args.trainlabel, args.testfeature, args.testlabel)
+    elif args.method == 'cnn':
+        from antifraud.methods.CNN_max import cnn_model
+        pred_score,test_label = cnn_model(args.trainfeature, args.trainlabel, args.testfeature, args.testlabel)
+    elif args.method.startswith('cnn-att'):
+        from antifraud.methods.cnn_att.att_cnn_main import att_main,load_att_data
+        train_feature, train_label, test_feature, test_label = load_att_data()
+        pred_score = att_main(train_feature, train_label, test_feature, test_label, args.method)
+    try:
+        from antifraud.metrics.normal_function import general_result
+        print("model {} works on the data...".format(args.method))
+        general_result(test_label, pred_score)
+    except:
+        import pickle
+        import time
+        cur_time = str(int(time.mktime(time.gmtime())))
+        score_filename = cur_time + ".score"
+        label_filename = cur_time + ".label"
+        pickle.dump(pred_score, open(score_filename, "wb"))
+        pickle.dump(test_label, open(label_filename, "wb"))
+        print("Something went wrong.(Please check your predicted score!)")
 
 
 if __name__ == "__main__":
