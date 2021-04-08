@@ -39,8 +39,8 @@ You can check out the other options available to use with *Ternary* using:
 
      python -m antifraud --help
 
-- --method, the processing method, includes: logistic, random-forest, xgboost, deep-forest, wide-deep, cnn,
-                                 cnn-att, etc.
+- --method, the processing method, includes: logistic, Adamboost, GBDT, LSTM, cnn,
+                                 cnn-att-2d, cnn-att-3d, etc.
 - --trainfeature, train feature data
 - --trainlabel, train label data
 - --testfeature, test feature data
