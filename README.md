@@ -41,8 +41,10 @@ You can check out the other options available to use with *Ternary* using:
 
 - --method, the processing method, includes: logistic, random-forest, xgboost, deep-forest, wide-deep, cnn,
                                  cnn-att, etc.
-- --train, train data
-- --test, test data
+- --trainfeature, train feature data
+- --trainlabel, train label data
+- --testfeature, test feature data
+- --testlabel, test label data
 
 
 >Default database was configured in [config/antifraud.cfg](antifraud/config/antifraud.cfg)
@@ -50,7 +52,7 @@ You can check out the other options available to use with *Ternary* using:
 #### Example
 Generate annotator command:
 
-     python -m antifraud --method random-forest --train data/train.csv --test data/test.csv
+     python -m antifraud --method GBDT --train data/train.csv --test data/test.csv
 
 ## Citing
 
