@@ -1,7 +1,7 @@
 # AntiFraud
 A Credit Card Fraud Detection Framework.
 
-Source codes of papers:
+Source codes implementation of papers:
 - AAAI2020: Spatio-temporal attention-based neural network for credit card fraud detection
 - ICONIP2016: Credit card fraud detection using convolutional neural networks
 
@@ -42,9 +42,18 @@ Generate annotator command:
 
 #### Data Description
 
-Most credit card transaction data are confidential and can’t be used as examples on the package. So we provide 20 simulated records (*data/example_data.csv*) for readers to run our code. You can feed the example data directly to --train or/and --test command.   
+Most credit card transaction data are confidential and can’t be used as examples on the package. So we provide 20 simulated records (*data/example_data.csv*) for readers to run our code. You can feed the example data directly to --train or/and --test command.
 
-We are looking for interesting public datasets! If you have any suggestions, please let us know!
+- is_fraud;  0 denotes legitimate transactions and 1 means fraud transactions.
+- card_id; unique ID for credit card cardholders. 
+- time_stamp; the transaction time.
+- loc_cty; the transaction location. 
+- loc_merch; the merchant (receiver) of the transaction.  
+- amt_grant; the granted transaction amount.  
+- amt_purch; the issued transaction amount.
+   
+
+> We are looking for interesting public datasets! If you have any suggestions, please let us know!
 
 ## Citing
 
