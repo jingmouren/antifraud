@@ -2,7 +2,7 @@ from sklearn.metrics import confusion_matrix, roc_auc_score
 import json
 import numpy as np
 
-def general_result(y_true, y_score, threshold=0.36):
+def general_result(y_true, y_score, threshold=0.6):
     def pred(score, best_thresh):
         label = 0
         if score > best_thresh:
@@ -11,7 +11,8 @@ def general_result(y_true, y_score, threshold=0.36):
     y_score = np.array(y_score)
     if len(y_score.shape) == 2:
         y_score = y_score[:,1]
-    best_thresh = select_threshold(y_true, y_score)
+    # best_thresh = select_threshold(y_true, y_score)
+    best_thresh = threshold
     y_pred = [pred(score, best_thresh) for score in y_score]
     c_m = confusion_matrix(y_true, y_pred)
     print("model works on the data, the confusion_matrix is:(Threshold:{})".format(str(best_thresh)), c_m)
@@ -26,6 +27,7 @@ def general_result(y_true, y_score, threshold=0.36):
     #train_label_binary = to_categorical(train_label)
     auc = roc_auc_score(y_true, y_score)
     print("model works on the data, the auc is:", auc)
+
 
 def select_threshold(y_true, y_score):
     def pred(score, threshold):

@@ -77,23 +77,23 @@ def get_featrue_map_bak(json_file='card.json'):
             for j in range(i+1):
                 time_j = sorted_list[j]['time']
                 time_bias = transf_time(time_i)-transf_time(time_j)
-                if time_bias < 63072000:#时间差小于两年
+                if time_bias < 63072000:
                     index_list[8].append(j)
-                if time_bias < 31536000:#时间差小于一年
+                if time_bias < 31536000:
                     index_list[7].append(j)
-                if time_bias < 15768000:#时间差小于半年
+                if time_bias < 15768000:
                     index_list[6].append(j)
-                if time_bias < 7884000:#三个月
+                if time_bias < 7884000:
                     index_list[5].append(j)
-                if time_bias < 2628000:#一个月
+                if time_bias < 2628000:
                     index_list[4].append(j)
-                if time_bias < 604800:#一周
+                if time_bias < 604800:
                     index_list[3].append(j)
-                if time_bias < 172800:#两天
+                if time_bias < 172800:
                     index_list[2].append(j)
-                if time_bias < 86400:#一天
+                if time_bias < 86400:
                     index_list[1].append(j)
-                if time_bias < 3600:#一小时
+                if time_bias < 3600:
                     index_list[0].append(j)
             full_index.append(index_list)
         max_country = max(country_set,key=country_set.get)
@@ -102,7 +102,7 @@ def get_featrue_map_bak(json_file='card.json'):
             tmp_obj = {'label':None, 'feature_matrix':None}
             tmp_obj['label'] = sorted_list[i]['label']
             matrix_all = []
-            for indexs in full_index[i]:#在不同水平的time window 下
+            for indexs in full_index[i]:
                 feature_item = {'Avg_grt_amt':0, 'Totl_grt_amt':0, 'Bias_grt_amt':0, 'Avg_pur_amt':0, 'Totl_pur_amt':0, 'Bias_pur_amt':0, 'Num':0, 'Most_cty':0, 'Most_merch':0}
                 total_grant = 0
                 total_purch = 0
@@ -165,23 +165,23 @@ def get_featrue_map(json_file='card.json'):
             for j in range(i+1):
                 time_j = sorted_list[j]['time']
                 time_bias = transf_time(time_i)-transf_time(time_j)
-                if time_bias < 63072000:#时间差小于两年
+                if time_bias < 63072000:
                     index_list[8].append(j)
-                if time_bias < 31536000:#时间差小于一年
+                if time_bias < 31536000:
                     index_list[7].append(j)
-                if time_bias < 15768000:#时间差小于半年
+                if time_bias < 15768000:
                     index_list[6].append(j)
-                if time_bias < 7884000:#三个月
+                if time_bias < 7884000:
                     index_list[5].append(j)
-                if time_bias < 2628000:#一个月
+                if time_bias < 2628000:
                     index_list[4].append(j)
-                if time_bias < 604800:#一周
+                if time_bias < 604800:
                     index_list[3].append(j)
-                if time_bias < 172800:#两天
+                if time_bias < 172800:
                     index_list[2].append(j)
-                if time_bias < 86400:#一天
+                if time_bias < 86400:
                     index_list[1].append(j)
-                if time_bias < 3600:#一小时
+                if time_bias < 3600:
                     index_list[0].append(j)
             full_index.append(index_list)
         #max_country = max(country_set,key=country_set.get)
@@ -190,7 +190,7 @@ def get_featrue_map(json_file='card.json'):
             tmp_obj = {'label':None, 'feature_matrix':None}
             tmp_obj['label'] = sorted_list[i]['label']
             matrix_all = []
-            for indexs in full_index[i]:#在不同水平的time window 下
+            for indexs in full_index[i]:
                 feature_item = {'Avg_grt_amt':0, 'Totl_grt_amt':0, 'Bias_grt_amt':0, 'Avg_pur_amt':0, 'Totl_pur_amt':0, 'Bias_pur_amt':0, 'Num':0, 'Most_cty':0, 'Most_merch':0}
                 total_grant = 0
                 total_purch = 0
@@ -251,9 +251,5 @@ def feature_engineering(mode=0, filename = 'filter_data.csv'):
 
 
 if __name__ == '__main__':
-    #产生数据文件transaction.csv
     feature_engineering(mode=0, filename = 'filter_data.csv')
-    #计算cost
-
-    #用transaction.csv产生扩增数据并划分为训练集和测试集
     #to be continued

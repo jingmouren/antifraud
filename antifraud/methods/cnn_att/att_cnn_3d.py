@@ -60,14 +60,14 @@ class Att_cnn3d_model():
         with tf.name_scope("attention-time-space"):
             # Time & Space attention
             self.output_att.append(self.attention(self.embedded_maps))
-            # 最后一个维度加上，适应cnn模型
+
             input_conv = tf.reshape(self.output_att,[-1, self.time_window_length, self.space_window_length, self.measure_length])
             self.input_conv_expanded = tf.expand_dims(input_conv, -1)
         return self.input_conv_expanded
 
     def cnn_layers(self, inputs, **kwargs):
         print("[ Att_cnn3d_model ] Constructing Convolution layers... ")
-        if len(inputs.shape) == 4: # 检查维度是否符合2d卷积层的输入
+        if len(inputs.shape) == 4:
             self.input_conv_expanded = tf.expand_dims(inputs, -1)
         elif len(inputs.shape) == 5:
             self.input_conv_expanded = inputs
@@ -130,8 +130,7 @@ class Att_cnn3d_model():
                 initializer=tf.contrib.layers.xavier_initializer()
             )
             b = tf.Variable(tf.constant(0.1, shape=[num_classes]), name="b")
-            #l2_loss += tf.nn.l2_loss(W)
-            #l2_loss += tf.nn.l2_loss(b)
+
             self.scores = tf.nn.xw_plus_b(self.h_flat, W, b, name="scores")
             self.predictions = tf.argmax(self.scores, 1, name="predictions")
         print("[ Att_cnn3d_model ] Model building finished ")
@@ -183,10 +182,8 @@ class Att_cnn3d_model():
             f_i_j = tf.squeeze(tf.matmul(atten_hidden_s, self.attention_V2))
             f_i.append(tf.nn.softmax(f_i_j*(1-self.lamda)))
 
-        #f_i = tf.concat(f_i, axis=1)
         s_i = []
         alpha_j = tf.reduce_sum(tf.transpose(f_i), 0)
-        #print("shape of alpha_j: {}".format(alpha_j.shape))
         for xi in range(len(x)):
             x_i = tf.reshape(x[xi],[-1,self.time_window_length*self.measure_length])
             x_i = tf.matmul(tf.matrix_diag(alpha_i[:,xi]), x_i)

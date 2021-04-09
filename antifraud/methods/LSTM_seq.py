@@ -20,9 +20,9 @@ def LSTM_model(train_feature_dir, train_label_dir, test_feature_dir, test_label_
         new_test_feature.append(test_feature[i][0])
 
     # parameters for LSTM
-    nb_lstm_outputs = 30  # 神经元个数
-    nb_time_steps = 1  # 时间序列长度
-    nb_input_vector = 3584  # 输入序列
+    nb_lstm_outputs = 30
+    nb_time_steps = 1
+    nb_input_vector = 3584
 
     # build model
     model = Sequential()

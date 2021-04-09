@@ -103,22 +103,20 @@ def kgn_main(x_train = None, y_train=None, Cost=None):
         c = pd.read_excel('./cost.0.25.xlsx')
         Cost = c[0].tolist()
     print("Start preprocessing...")
-#总样本，总cost --> 非欺诈样本，欺诈样本，欺诈cost
     non_fraud_set, fraud_set, cost_of_fraud = fraud_split(x_train, y_train, Cost)
-#非欺诈样本 --> 训练非欺诈，测试非欺诈
+
     train_non_fraud, test_non_fraud = train_test_split(non_fraud_set, test_size=0.25)
-#欺诈样本，欺诈cost --> 训练欺诈，测试欺诈，训练cost,测试cost
+
     train_fraud, test_fraud, train_cost, test_cost = combind_train_test_split(fraud_set, cost_of_fraud)
-#产生训练集和测试集
-####KMeans
+
     scaled_test_fraud_set = scale(np.array(test_fraud).reshape((1,len(test_fraud),9*9))[0])
     print("Start kmeans process...")
     test_kmeans = KMeans(n_clusters = k, random_state = 0).fit(scaled_test_fraud_set)
     test_labels = test_kmeans.labels_
     print("Start generate new samples...")
-###训练欺诈，训练cost --> 扩增训练欺诈
+
     augmented_test_fraud = generate_new_samples(test_fraud, test_cost, test_labels)#time consuming
-##测试集 <-- 测试欺诈，测试非欺诈
+
     feature_test = []
     len_ft = 0
     label_test = []
@@ -132,15 +130,15 @@ def kgn_main(x_train = None, y_train=None, Cost=None):
         location = np.random.randint(0,len_ft)
         feature_test.insert(location,item)
         label_test.insert(location,0)
-####KMeans
+
     scaled_fraud_set = scale(np.array(train_fraud).reshape((1,len(train_fraud),9*9))[0])
     print("Start kmeans process...")
     kmeans = KMeans(n_clusters = k, random_state = 0).fit(scaled_fraud_set)
     labels = kmeans.labels_
     print("Start generate new samples...")
-###训练欺诈，训练cost --> 扩增训练欺诈
+
     augmented_fraud = generate_new_samples(train_fraud, train_cost, labels)#time consuming
-###训练集 <-- 扩增训练欺诈，训练非欺诈
+
     feature_train = []
     len_ft = 0
     label_train = []
@@ -160,23 +158,7 @@ def kgn_main(x_train = None, y_train=None, Cost=None):
     save_data_file(feature_test, label_test, test_filename)
     print("Finished generating data set!")
     return feature_train, label_train, feature_test, label_test
-    #to be continued
-    #scaled_fraud_set = scale(np.array(fraud_set).reshape((1,len(fraud_set),9*9))[0])
-    #print("Start kmeans process...")
-    #kmeans = KMeans(n_clusters = k, random_state = 0).fit(scaled_fraud_set)
-    #labels = kmeans.labels_
-    #print("Start generate new samples...")
-    #augmented_fraud = generate_new_samples(fraud_set, cost_of_fraud, labels)#time consuming
-    #new_y = np.concatenate([np.ones(len(non_fraud_set)),np.zeros(len(augmented_fraud))]).tolist()
-    #non_fraud_set.extend(augmented_fraud)
-    #print("Start write output to files...")
-    #save_data_file(non_fraud_set, new_y, 'Alldata.csv')
-    ##output = pd.DataFrame({'label':new_y, 'feature':non_fraud_set})
-    ##output.to_csv('Alldata.csv')
-    #feature_train, feature_test, label_train, label_test = train_test_split(non_fraud_set, new_y, test_size=0.3, random_state=4)
-    #save_data_file(feature_train, label_train, 'train_set.csv')
-    #save_data_file(feature_test, label_test, 'test_set.csv')
-    #print("Finished!")
+
 
 if __name__ == '__main__':
     kgn_main()

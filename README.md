@@ -96,4 +96,5 @@ If you find *Antifraud* is useful for your research, please consider citing the 
 -  scipy>=0.19.1
 -  matplotlib>=2.0.2
 -  tensorflow==1.12.0
+-  keras==2.2.0
 -  xgboost>=0.81

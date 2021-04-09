@@ -62,13 +62,13 @@ class Att_cnn2d_model():
             input_conv = tf.reshape(tf.concat(self.output_att, axis=1),
                                     [-1, self.time_window_length, self.measure_length*2],
                                     name="input_convolution")
-            # 最后一个维度加上，适应cnn模型
+
             self.input_conv_expanded = tf.expand_dims(input_conv, -1)
         return self.input_conv_expanded
 
     def cnn_layers(self, inputs, **kwargs):
         print("[ Att_cnn2d_model ] Constructing Convolution layers... ")
-        if len(inputs.shape) == 3: # 检查维度是否符合2d卷积层的输入
+        if len(inputs.shape) == 3:
             self.input_conv_expanded = tf.expand_dims(inputs, -1)
         elif len(inputs.shape) == 4:
             self.input_conv_expanded = inputs
@@ -158,7 +158,7 @@ class Att_cnn2d_model():
         for i in range(len(x)):
             output = x[i]
             output = tf.reshape(output, [-1, self.measure_length])
-            #两个权重矩阵是否需要学习？？
+
             atten_hidden = tf.tanh(tf.add(tf.matmul(x_i, self.attention_W), tf.matmul(output, self.attention_U)))
             #atten_hidden = tf.add(tf.matmul(x_i, self.attention_W), tf.matmul(output, self.attention_U))
             e_i_j = tf.matmul(atten_hidden, self.attention_V)

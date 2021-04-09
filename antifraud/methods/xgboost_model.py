@@ -14,25 +14,25 @@ def xgb_model(train_file, test_file):
     paras = {
         'booster': 'gbtree',
         'objective': 'binary:logistic',
-        'gamma': 0.05,  # 树的叶子节点下一个区分的最小损失，越大算法模型越保守
+        'gamma': 0.05,
         'max_depth': 12,
-        'lambda': 450,  # L2正则项权重
-        'subsample': 0.4,  # 采样训练数据，设置为0.5
-        'colsample_bytree': 0.7,  # 构建树时的采样比率
-        'min_child_weight': 12,  # 节点的最少特征数
+        'lambda': 450,
+        'subsample': 0.4,
+        'colsample_bytree': 0.7,
+        'min_child_weight': 12,
         'silent': 1,
-        'eta': 0.005,  # 类似学习率
+        'eta': 0.005,
         'seed': 700,
-        'nthread': 4,  # cpu线程数
+        'nthread': 4,
     }
-    paras_list = list(paras.items())  # 超参数放到集合plst中;
-    offset = int(len(train) * 0.9)  # 训练集中数据, 9/10用于训练，1/10用于验证
-    num_rounds = 500  # 迭代次数
-    xgb_test = xgb.DMatrix(test)  # 加载数据可以是numpy的二维数组形式，也可以是xgboost的二进制的缓存文件，加载的数据存储在对象DMatrix中
-    xgb_train = xgb.DMatrix(train[:offset, :], label=labels[:offset])  # 将训练集的二维数组加入到里面
-    xgb_val = xgb.DMatrix(train[offset:, :], label=labels[offset:])  # 将验证集的二维数组形式的数据加入到DMatrix对象中
+    paras_list = list(paras.items())
+    offset = int(len(train) * 0.9)
+    num_rounds = 500
+    xgb_test = xgb.DMatrix(test)
+    xgb_train = xgb.DMatrix(train[:offset, :], label=labels[:offset])
+    xgb_val = xgb.DMatrix(train[offset:, :], label=labels[offset:])
 
-    watchlist = [(xgb_train, 'train'), (xgb_val, 'val')]  # return训练和验证的错误率
+    watchlist = [(xgb_train, 'train'), (xgb_val, 'val')]
     model = xgb.train(paras_list, xgb_train, num_rounds, watchlist, early_stopping_rounds=100)
     pre_result = model.predict(xgb_test, ntree_limit=model.best_iteration)
     pre_label = []

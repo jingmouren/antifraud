@@ -3,12 +3,11 @@ import numpy as np
 
 
 def xgb_model(train_feature_dir, train_label_dir, test_feature_dir, test_label_dir):
-    """read data"""
     train_feature = np.load(train_feature_dir)
     train_label = np.load(train_label_dir)
     test_feature = np.load(test_feature_dir)
     test_label = np.load(test_label_dir)
-    """ data reshape"""
+
     train_feature = np.reshape(train_feature, (len(train_feature), 1, 1, 3584))
     test_feature = np.reshape(test_feature, (len(test_feature), 1, 1, 3584))
     new_train_feature = []
@@ -17,11 +16,11 @@ def xgb_model(train_feature_dir, train_label_dir, test_feature_dir, test_label_d
     new_test_feature = []
     for i in range(len(test_feature)):
         new_test_feature.append(test_feature[i][0][0])
-    """build the model"""
+
     Gbdt = GradientBoostingClassifier(random_state=10)  # use the default parameters
-    """train the model"""
+
     Gbdt.fit(new_train_feature, train_label)
-    """test the model"""
+
     pre_label = Gbdt.predict_proba(new_test_feature)
     _pre_label = []
     for i in range(len(test_feature)):
