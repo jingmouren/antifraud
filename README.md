@@ -5,18 +5,6 @@ Source codes of papers:
 - AAAI2020: Spatio-temporal attention-based neural network for credit card fraud detection
 - ICONIP2016: Credit card fraud detection using convolutional neural networks
 
-## Requirements
-
--  Python>=3.5
--  numpy>=1.14.3
--  scikit-learn>=0.20.0
--  pytest>=3.6.3
--  pandas>=0.23.3
--  networkx>=2.0
--  scipy>=0.19.1
--  matplotlib>=2.0.2
--  tensorflow>=1.12.0
--  xgboo    st>=0.81
 
 ## Usage
 
@@ -47,12 +35,16 @@ You can check out the other options available to use with *Ternary* using:
 - --testlabel, test label data
 
 
->Default database was configured in [config/antifraud.cfg](antifraud/config/antifraud.cfg)
-
 #### Example
 Generate annotator command:
 
      python -m antifraud --method GBDT --train data/train.csv --test data/test.csv
+
+#### Data Description
+
+Most credit card transaction data are confidential and can’t be used as examples on the package. So we provide 20 simulated records (*data/example_data.csv*) for readers to run our code. You can feed the example data directly to --train or/and --test command.   
+
+We are looking for interesting public datasets! If you have any suggestions, please let us know!
 
 ## Citing
 
@@ -83,3 +75,16 @@ If you find *Antifraud* is useful for your research, please consider citing the 
         organization={Springer}
     }
     
+    
+## Requirements
+
+-  Python>=3.5
+-  numpy>=1.14.3
+-  scikit-learn>=0.20.0
+-  pytest>=3.6.3
+-  pandas>=0.23.3
+-  networkx>=2.0
+-  scipy>=0.19.1
+-  matplotlib>=2.0.2
+-  tensorflow==1.12.0
+-  xgboost>=0.81
